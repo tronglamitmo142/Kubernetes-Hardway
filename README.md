@@ -14,13 +14,15 @@ Note about Kubernetes
 ### 1.1. Networking <a name="networking"></a>
 - Basic networking in Linux system: [networking](./networking.md)
 - [CNI](#cni)  
+- [Service Networking](#service)
+- [DNS](#dns)
 1. [CNI](https://github.com/containernetworking/cni)<a name="cni"></a>
 - **Standard** that define how program should develop to solving container runtime.
 - Docker doesn't follow CNI 
 - Network addons list: https://kubernetes.io/docs/concepts/cluster-administration/addons/
 - Deploy weave network: https://v1-22.docs.kubernetes.io/docs/setup/production-environment/tools/kubeadm/high-availability/#steps-for-the-first-control-plane-node  
 
-2. Pod Networking<a name="pod-networking"></a>  
+1. Pod Networking<a name="pod-networking"></a>  
 - Pod networking model:
   - Every Pod should have IP Address 
   - Every Pod should be able to communicate with other pod in the same node
@@ -58,7 +60,7 @@ ls /etc/cni/net.d
     - host-local
     - Can define in `ipam` spec in network configuration file
 
-3. Service Networking 
+3. Service Networking<a name="service"></a>
 ![](/images/Screenshot%202023-05-02%20at%2009.09.05.png)
 - Virtual object in cluster. When `service` is created, `kube-proxy` create a forwarding rules that tell every trafic to the service ip will go to the pod's ip. The rules is defined in iptables by default. 
 - We can specify range of servers (example clusterip):
@@ -79,7 +81,7 @@ cat /var/log/kube-proxy.log
 - ClusterIP
 - NodePort
 
-4. DNS 
+4. DNS<a name="dns"></a>
 - Service resolution: 
 ![](images/Screenshot%202023-05-02%20at%2009.24.59.png)
 - Pod resolution: 
