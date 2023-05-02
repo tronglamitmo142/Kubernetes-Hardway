@@ -33,6 +33,62 @@ Note about Kubernetes
 --cni-conf-dir=/etc/cni/net.d
 --cni-bin-dir=/etc/cni/bin
 ```
+- View kubelet options
+```bash
+ps -aux | grep kubelet
+```
+
+```bash
+ls /opt/cni/bin
+```
+
+```bash
+ls /etc/cni/net.d
+```
+
+- CNI Weave Work:
+  - IP range: 10.32.0.1 -> 10.47.255.254
+```bash 
+# Deploy weave work as a deamon set
+```
+
+- IP Address Management (IPAM)
+  - CNI manage IP assigment for pod, they have 2 plugins:
+    - DHCP
+    - host-local
+    - Can define in `ipam` spec in network configuration file
+
+3. Service Networking 
+![](/images/Screenshot%202023-05-02%20at%2009.09.05.png)
+- Virtual object in cluster. When `service` is created, `kube-proxy` create a forwarding rules that tell every trafic to the service ip will go to the pod's ip. The rules is defined in iptables by default. 
+- We can specify range of servers (example clusterip):
+```bash
+kube-api-server --service-cluster-ip-range ipNet
+```
+
+```bash
+ps aux | grep kube-api-server
+```
+- Inspect rules in `iptables`:
+```bash
+iptables -L -t nat | grep services 
+```
+```bash
+cat /var/log/kube-proxy.log
+```
+- ClusterIP
+- NodePort
+
+4. DNS 
+- Service resolution: 
+![](images/Screenshot%202023-05-02%20at%2009.24.59.png)
+- Pod resolution: 
+![](images/Screenshot%202023-05-02%20at%2009.26.01.png)
+- It's recomendation to use [CoreDNS](https://github.com/coredns/coredns)
+- When CoreDNS is created, it also create a service type clusterIP. The ip of services is defined by kubelet
+```bash
+cat /var/lib/kubelet/config.yaml
+```
 ## 2. Practical <a name="practical"></a>
 ### 2.1. Setup Kubernetes cluster in AWS using kubeadm <a name="kubeadm"></a>
 
