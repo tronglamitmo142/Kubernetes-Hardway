@@ -91,6 +91,30 @@ cat /var/log/kube-proxy.log
 ```bash
 cat /var/lib/kubelet/config.yaml
 ```
+
+5. Ingress<a name="ingress"></a>
+- Act as layer 7 Load Balancer in kubernetes cluster 
+- Ingress = Ingress controller (deploy) + Ingress resource (configure)
+- Conponent of ingress controller 
+![](./images/Screenshot%202023-05-02%20at%2010.44.48.png)
+- Example of ingress rule 
+```yaml
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: test-ingress
+  namespace: critical-space
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /pay
+        backend:
+          serviceName: pay-service
+          servicePort: 8282
+```
 ## 2. Practical <a name="practical"></a>
 ### 2.1. Setup Kubernetes cluster in AWS using kubeadm <a name="kubeadm"></a>
 
